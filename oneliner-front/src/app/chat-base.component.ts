@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ChatService } from './chat.service';
+import { parseWebDriverCommand } from 'blocking-proxy/built/lib/webdriver_commands';
 
 @Component({
   selector: 'app-chat-base',
@@ -100,8 +101,26 @@ export class ChatBaseComponent implements OnInit, AfterViewInit {
     this.chat.requestUsers();
   }
 
+  parseCommand(command: string ) {
+    let words = command.split(' ');
+    if (words.length > 2) { 
+      let keyword = words.shift();
+      if (keyword === '/message'
+        || keyword === '/msg'
+        || keyword === '/tell'
+        || keyword === '/whisper') {
+        this.chat.privateMsg(words.shift(), words.join(' '));
+      }
+    }
+  }
+
   outgoingMsg(msg: string) {
     //console.log(msg);
-    this.chat.sendMsg(msg);
+
+    if (msg.charAt(0) === '/') {
+      this.parseCommand(msg);
+    } else {
+      this.chat.sendMsg(msg);
+    }
   }
 }

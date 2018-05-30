@@ -42,6 +42,15 @@ io.on('connection', (socket) => {
                 console.log(users);
             }
         }
+        else if (message.hasOwnProperty('tell')) {
+            let target = users.filter(us => us.name === message['tell']);
+            if (target.length === 1) {
+                socket.emit('message', user['name'] + " => " + target[0].name + "> " + message.privmsg);
+                target[0].socket.emit('message', user['name'] + " => " + target[0].name + "> " + message.privmsg);
+            } else {
+                socket.emit('message', "user " + message['tell'] + " not found>");
+            }
+        }
         console.log("Message Received: " + JSON.stringify(message));  
     });
 });

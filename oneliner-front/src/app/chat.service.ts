@@ -28,4 +28,8 @@ export class ChatService {
     //console.log("request users");
     ChatService.messages.next({users: true});
   }
+
+  privateMsg(receiver: string, msg: string) {
+    ChatService.messages.next({tell: receiver, privmsg: msg });
+  }
 }
