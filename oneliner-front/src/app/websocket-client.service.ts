@@ -12,21 +12,25 @@ export class WebsocketClientService {
   connect(): Rx.Subject<MessageEvent> {
     this.socket = io('http://localhost:3300');
 
-    // We define our observable which will observe any incoming messages
-    // from our socket.io server.
     const observable = new Observable(observer => {
         this.socket.on('message', (data) => {
-          console.log('Received message from Websocket Server');
+          //console.log('Received message from Websocket Server');
           observer.next({message: data});
         });
         this.socket.on('names', (data) => {
-          console.log(data);
+          //console.log(data);
           observer.next({names: data});
         });
-        this.socket.on('disconnect', (data) => {
-          console.log(data);
-          observer.next({disconnect: data});
+        this.socket.on('removed', (data) => {
+          //console.log(data);
+          observer.next({removed: data});
         });
+        this.socket.on('registered', (data) => {
+          //console.log(data);
+          observer.next({registered: data});
+        })
+        this.socket.on('joined', data => observer.next({joined: data}));
+
         return () => {
           this.socket.disconnect();
         };

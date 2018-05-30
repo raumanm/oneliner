@@ -4,21 +4,28 @@ import { Observable, Subject } from 'rxjs/Rx';
 
 @Injectable()
 export class ChatService {
-  messages: Subject<any>;
+  static messages: Subject<any>;
   
-  constructor(private wscService: WebsocketClientService) {
-    this.messages = <Subject<any>>wscService
-      .connect()
-      .map((response: any): any => {
-        return response;
-      })
-   }
+  constructor(private wscService: WebsocketClientService) {}
+
+  connect() {
+    ChatService.messages = <Subject<any>>this.wscService
+    .connect()
+    .map((response: any): any => {
+      return response;
+    })
+  }
   
   sendMsg(msg: string) {
-    this.messages.next({message: msg});
+    ChatService.messages.next({message: msg});
   }
 
   register(name: string) {
-    this.messages.next({register: name});
+    ChatService.messages.next({register: name});
+  }
+
+  requestUsers() {
+    //console.log("request users");
+    ChatService.messages.next({users: true});
   }
 }

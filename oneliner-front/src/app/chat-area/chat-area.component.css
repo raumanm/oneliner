@@ -1,3 +1,8 @@
 ul {
  list-style-type: none;
 }
+#chatarea {
+    max-height: inherit;
+    overflow-wrap: break-word;
+    overflow-y: auto;
+}
