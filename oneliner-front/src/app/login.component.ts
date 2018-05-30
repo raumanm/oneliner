@@ -19,9 +19,7 @@ import { RegisterGuard } from './registerguard.service';
           class="form-control"
           placeholder="Enter name"
           name="name"
-          required 
-          minlength="3"
-          maxlength="20"
+          required
           #nameElement="ngModel"
           (keyup.enter)="checkName(nameElement.value)"
           [(ngModel)]="name"/>
@@ -58,6 +56,13 @@ export class LoginComponent implements OnInit {
     }
 
     checkName(name: string) {
+      if (name.length < 16 
+        && name.length > 2 
+        && /[a-zA-Z äÄöÖ]+/.test(name)) 
         this.chat.register(name);
+      else {
+        this.invalid = true;
+        this.name = "";
+      }
     }
 }

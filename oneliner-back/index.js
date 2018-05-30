@@ -17,7 +17,7 @@ io.on('connection', (socket) => {
         users = users.filter(el => el.socket.id !== socket.id);
         if (users.length !== 0 && user.length === 1) {
             users.forEach(element => {
-                console.log("Telling " + element.name + " " + user[0].name + "disconnected")
+                console.log("Telling " + element.name + " " + user[0].name + " disconnected")
                 element.socket.emit('removed', user[0].name);
             });
         }
@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
                 user['name'] = message.register;
                 socket.emit('registered', true);
                 socket.broadcast.emit('joined', user['name']);
-                console.log(users);
+                //console.log(users);
             }
         }
         else if (message.hasOwnProperty('tell')) {
